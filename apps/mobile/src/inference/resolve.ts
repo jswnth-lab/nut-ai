@@ -19,13 +19,13 @@ import { asCredential } from './publik-core'
  * the three vendor slots, and the vendor branch below is exactly what it was.
  */
 
-export type ProviderSetting = ProviderId | 'publik' | 'none' | ''
+export type ProviderSetting = ProviderId | 'publik' | 'custom' | 'none' | ''
 
 export interface Resolved {
   /** The wire dialect the builders and the envelope extractor use. */
   dialect: ProviderId
   /** What the user chose; drives copy and the settings UI. */
-  selected: ProviderId | 'publik'
+  selected: ProviderId | 'publik' | 'custom'
   /** The photo-scan model. */
   model: string
   /** The model for text-only calls (exercise estimate, web lookup). */
@@ -61,6 +61,32 @@ export async function resolveInference(): Promise<ResolveOutcome> {
         credential: asCredential(cred.value),
         baseUrl: install.baseUrl,
         metered: true,
+        webSearch: false,
+      },
+    }
+  }
+
+  // `custom` is any OpenAI-compatible endpoint the user names (OpenRouter,
+  // NVIDIA NIM, Groq, a self-hosted server). Same trick as publik: it is a
+  // setting, not a dialect, so it resolves to the OpenAI wire format at the
+  // user's base URL. Unmetered, and no Responses web_search tool.
+  if (provider === 'custom') {
+    const [credential, baseUrl, model] = await Promise.all([
+      loadCredential('custom'),
+      setting('custom_base_url'),
+      setting('provider_model'),
+    ])
+    if (!credential || !baseUrl || !model) return { ok: false, error: { kind: 'key-missing' } }
+    return {
+      ok: true,
+      value: {
+        dialect: 'openai',
+        selected: 'custom',
+        model,
+        textModel: model,
+        credential: { kind: 'api_key', value: credential.value },
+        baseUrl,
+        metered: false,
         webSearch: false,
       },
     }

@@ -30,7 +30,7 @@ export type CredentialKind = 'api_key' | 'oauth'
  * user accepts the disclosure — still runtime, still never from source — and
  * publik code never touches the three vendor slots.
  */
-export type CredentialSlot = ProviderId | 'publik'
+export type CredentialSlot = ProviderId | 'publik' | 'custom'
 
 export interface StoredCredential {
   kind: CredentialKind

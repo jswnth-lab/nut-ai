@@ -44,6 +44,24 @@ describe('resolveInference', () => {
     expect(await resolveInference()).toEqual({ ok: false, error: { kind: 'no-key' } })
   })
 
+  it('custom → OpenAI dialect at the user base URL, unmetered, no web search', async () => {
+    settings.set('provider', 'custom')
+    settings.set('custom_base_url', 'https://openrouter.ai/api')
+    settings.set('provider_model', 'google/gemini-2.0-flash-001')
+    expect((await resolveInference()).ok).toBe(false)
+    creds.set('custom', { kind: 'api_key', value: 'sk-or-x' })
+    const r = await resolveInference()
+    expect(r.ok).toBe(true)
+    if (r.ok) {
+      expect(r.value.dialect).toBe('openai')
+      expect(r.value.selected).toBe('custom')
+      expect(r.value.baseUrl).toBe('https://openrouter.ai/api')
+      expect(r.value.model).toBe('google/gemini-2.0-flash-001')
+      expect(r.value.metered).toBe(false)
+      expect(r.value.webSearch).toBe(false)
+    }
+  })
+
   it('publik with key + install → OpenAI dialect at the install base URL, metered, no web search', async () => {
     settings.set('provider', 'publik')
     creds.set('publik', { kind: 'api_key', value: 'pk_x' })

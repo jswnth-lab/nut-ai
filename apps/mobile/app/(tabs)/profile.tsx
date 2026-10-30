@@ -69,6 +69,11 @@ export default function Profile() {
                 ? `publik API · ${formatMicros(0)} · not linked`
                 : `publik API · ${formatMicros(wallet?.balanceMicros)} left`,
           )
+        } else if (p === 'custom') {
+          const [cred, base] = await Promise.all([loadCredential('custom'), setting('custom_base_url')])
+          if (!alive) return
+          const host = base ? base.replace(/^https?:\/\//, '').split('/')[0] : 'custom'
+          setProviderLabel(cred ? `${host} · ${maskCredential(cred.value)}` : `${host} · key missing`)
         } else {
           const cred = await loadCredential(p as ProviderId)
           if (!alive) return

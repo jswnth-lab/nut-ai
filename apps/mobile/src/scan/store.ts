@@ -25,7 +25,7 @@ import type { ScanFailureKind } from '../inference/pathA/client'
 /** What the scan cost and where it ran — carried to the ledger at log time. */
 export interface ScanMeta {
   /** What the user selected — a vendor, or publik API. */
-  provider: ProviderId | 'publik'
+  provider: ProviderId | 'publik' | 'custom'
   model: string
   inputTokens: number
   outputTokens: number

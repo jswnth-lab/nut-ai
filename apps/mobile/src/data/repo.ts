@@ -65,7 +65,7 @@ export async function resetEverything(): Promise<void> {
     }
   })
 
-  for (const p of ['anthropic', 'openai', 'google'] as const) {
+  for (const p of ['anthropic', 'openai', 'google', 'custom'] as const) {
     await clearCredential(p)
   }
   await disconnectPublik()

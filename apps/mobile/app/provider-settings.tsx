@@ -309,6 +309,17 @@ export default function ProviderSettings() {
           </View>
         ) : null}
 
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push('/custom-provider' as never)}
+          style={[styles.card, { backgroundColor: theme.bgSunken }]}
+        >
+          <Text style={[type.bodyStrong, { color: theme.text }]}>OpenRouter, NVIDIA or other</Text>
+          <Text style={[type.caption, { color: theme.textMuted, marginTop: 2, lineHeight: 18 }]}>
+            Use any OpenAI-compatible endpoint with your own key and model.
+          </Text>
+        </Pressable>
+
         {provider !== 'publik' && masked ? (
           <>
             <Text style={[type.label, { color: theme.textMuted, marginTop: space.xl }]}>Model</Text>
