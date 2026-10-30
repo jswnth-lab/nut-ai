@@ -93,9 +93,12 @@ export default function Home() {
     >
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.wordmark, { color: theme.text }]}>Nut AI</Text>
-        <View style={[styles.streakPill, { backgroundColor: theme.bgSunken }]}>
-          <Icon name="flame" size={16} color={theme.text} />
+        <View>
+          <Text style={[type.caption, { color: theme.textMuted }]}>{greeting()}</Text>
+          <Text style={[styles.wordmark, { color: theme.text }]}>Nut AI</Text>
+        </View>
+        <View style={[styles.streakPill, { backgroundColor: theme.bgElevated }]}>
+          <Icon name="flame" size={16} color={theme.accentStrong} />
           <Text style={[type.bodyStrong, { color: theme.text }]}>0</Text>
         </View>
       </View>
@@ -120,8 +123,12 @@ export default function Home() {
       >
         {/* Page 1 — calories and the three macros */}
         <View style={{ width, paddingHorizontal: space.lg }}>
-          <View style={[styles.heroCard, { backgroundColor: theme.bgElevated, borderColor: theme.border }]}>
+          <View style={[styles.heroCard, { backgroundColor: theme.accentSoft }]}>
             <View style={{ flex: 1 }}>
+              <View style={[styles.heroBadge, { backgroundColor: theme.bgElevated }]}>
+                <Icon name="flame" size={14} color={theme.accentStrong} />
+                <Text style={[type.micro, { color: theme.text }]}>Daily intake</Text>
+              </View>
               <Text style={[styles.hero, { color: theme.text }]}>
                 {Math.abs(Math.round(remaining))}
               </Text>
@@ -129,8 +136,8 @@ export default function Home() {
                 {over ? 'Calories over' : 'Calories left'}
               </Text>
             </View>
-            <Ring pct={pct} over={over} size={128} stroke={12}>
-              <Icon name="flame" size={26} color={theme.text} />
+            <Ring pct={pct} over={over} size={120} stroke={11}>
+              <Text style={[styles.mid, { color: theme.text }]}>{Math.round(Math.min(pct, 9.99) * 100)}%</Text>
             </Ring>
           </View>
 
@@ -220,7 +227,7 @@ export default function Home() {
         {[0, 1, 2].map((i) => (
           <View
             key={i}
-            style={[styles.dot, { backgroundColor: i === page ? theme.text : theme.border }]}
+            style={[styles.dot, { backgroundColor: i === page ? theme.accent : theme.ringTrack }]}
           />
         ))}
       </View>
@@ -284,6 +291,11 @@ export default function Home() {
   )
 }
 
+function greeting(): string {
+  const h = new Date().getHours()
+  return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'
+}
+
 function DayStrip({ selected, onSelect }: { selected: number; onSelect: (o: number) => void }) {
   const theme = useTheme()
   const now = new Date()
@@ -304,7 +316,7 @@ function DayStrip({ selected, onSelect }: { selected: number; onSelect: (o: numb
             onPress={() => onSelect(off)}
             accessibilityRole="button"
             accessibilityState={{ selected: isSel, disabled: future }}
-            style={[styles.dayCol, isSel && { backgroundColor: theme.bgElevated }]}
+            style={[styles.dayCol, isSel && { backgroundColor: theme.accentSoft }]}
           >
             <Text style={[type.caption, { color: future ? theme.textFaint : theme.textMuted }]}>
               {DAY_LABELS[d.getDay()]}
@@ -313,13 +325,12 @@ function DayStrip({ selected, onSelect }: { selected: number; onSelect: (o: numb
               style={[
                 styles.dayCircle,
                 {
-                  borderColor: isSel ? theme.text : theme.border,
-                  borderStyle: off < 0 ? 'dashed' : 'solid',
+                  backgroundColor: isSel ? theme.accent : theme.bgElevated,
                   opacity: future ? 0.4 : 1,
                 },
               ]}
             >
-              <Text style={[type.bodyStrong, { color: future ? theme.textFaint : theme.text }]}>
+              <Text style={[type.bodyStrong, { color: future ? theme.textFaint : isSel ? theme.onAccent : theme.text }]}>
                 {d.getDate()}
               </Text>
             </View>
@@ -438,7 +449,7 @@ const styles = StyleSheet.create({
   strip: { flexDirection: 'row', paddingHorizontal: space.md, marginTop: space.lg },
   dayCol: { flex: 1, alignItems: 'center', paddingVertical: space.sm, borderRadius: radius.lg, gap: space.sm },
   dayCircle: {
-    width: 40, height: 40, borderRadius: radius.pill, borderWidth: 1.5,
+    width: 40, height: 40, borderRadius: radius.pill,
     alignItems: 'center', justifyContent: 'center',
   },
   heroCard: {
@@ -446,9 +457,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: space.xl,
     borderRadius: radius.xl,
-    borderWidth: StyleSheet.hairlineWidth,
   },
-  hero: { fontSize: 46, fontWeight: '800', letterSpacing: -1.8 },
+  heroBadge: {
+    flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start',
+    paddingHorizontal: space.md, paddingVertical: 6, borderRadius: radius.pill, marginBottom: space.sm,
+  },
+  hero: { fontSize: 56, fontWeight: '800', letterSpacing: -2.2 },
   mid: { fontSize: 26, fontWeight: '800', letterSpacing: -0.8 },
   macroRow: { flexDirection: 'row', gap: space.sm, marginTop: space.md },
   macroCard: {

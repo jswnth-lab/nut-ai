@@ -88,8 +88,8 @@ export default function Progress() {
 
       {/* Streak credits logging INTENT, so our own failures never break it. */}
       <View style={styles.row}>
-        <View style={[styles.tile, { backgroundColor: theme.bgSunken }]}>
-          <Icon name="flame" size={30} color={theme.text} />
+        <View style={[styles.tile, { backgroundColor: theme.accentSoft }]}>
+          <Icon name="flame" size={30} color={theme.accentStrong} />
           <Text style={[styles.tileNum, { color: theme.text }]}>{streak}</Text>
           <Text style={[type.caption, { color: theme.textMuted }]}>Day streak</Text>
         </View>
@@ -104,7 +104,7 @@ export default function Progress() {
         <View style={styles.spread}>
           <Text style={[type.caption, { color: theme.textMuted }]}>Current weight</Text>
           <Pressable onPress={() => router.push('/log-weight' as never)} hitSlop={space.sm}>
-            <Text style={[type.label, { color: theme.protein }]}>Log weight</Text>
+            <Text style={[type.label, { color: theme.accentStrong }]}>Log weight</Text>
           </Pressable>
         </View>
         <Text style={[styles.big, { color: theme.text }]}>
@@ -112,7 +112,7 @@ export default function Progress() {
         </Text>
 
         <View style={[styles.bar, { backgroundColor: theme.ringTrack }]}>
-          <View style={{ width: `${pctOfGoal * 100}%`, height: 6, borderRadius: 3, backgroundColor: theme.text }} />
+          <View style={{ width: `${pctOfGoal * 100}%`, height: 6, borderRadius: 3, backgroundColor: theme.accent }} />
         </View>
         <View style={styles.spread}>
           <Text style={[type.caption, { color: theme.textMuted }]}>
@@ -145,7 +145,7 @@ export default function Progress() {
             <Pressable
               key={w.key}
               onPress={() => setWindow(w.key)}
-              style={[styles.segItem, window === w.key && { backgroundColor: theme.bg }]}
+              style={[styles.segItem, window === w.key && { backgroundColor: theme.accentSoft }]}
             >
               <Text style={[type.label, { color: window === w.key ? theme.text : theme.textMuted }]}>
                 {w.key}
@@ -299,7 +299,7 @@ function WeightChart({ trend }: { trend: TrendPoint[] }) {
       {trend.map((p, i) =>
         p.rawKg != null ? <Circle key={i} cx={x(i)} cy={y(p.rawKg)} r="3" fill={theme.textFaint} /> : null,
       )}
-      <Path d={d} stroke={theme.text} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <Path d={d} stroke={theme.accentStrong} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </Svg>
   )
 }

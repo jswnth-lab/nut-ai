@@ -48,40 +48,60 @@ export default function TabLayout() {
     <>
       <Tabs
         screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: theme.bg } }}
-        tabBar={({ state, navigation }) => (
-          <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, space.md) }]}>
-            <View style={[styles.pill, { backgroundColor: theme.bgElevated, borderColor: theme.border }]}>
-              {TABS.map((tab, i) => {
-                const focused = state.index === i
-                return (
-                  <Pressable
-                    key={tab.name}
-                    accessibilityRole="tab"
-                    accessibilityState={{ selected: focused }}
-                    accessibilityLabel={tab.label}
-                    onPress={() => navigation.navigate(tab.name)}
-                    style={[styles.tab, focused && { backgroundColor: theme.bgSunken }]}
-                    hitSlop={space.sm}
-                  >
-                    <Icon name={tab.icon} size={21} color={focused ? theme.text : theme.textFaint} />
-                    <Text style={[type.micro, { color: focused ? theme.text : theme.textFaint, marginTop: 1 }]}>
-                      {tab.label}
-                    </Text>
-                  </Pressable>
-                )
-              })}
-            </View>
-
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Add"
-              onPress={() => setSheetOpen(true)}
-              style={[styles.fab, { backgroundColor: theme.text }]}
+        tabBar={({ state, navigation }) => {
+          const item = (i: number) => {
+            const tab = TABS[i]!
+            const focused = state.index === i
+            return (
+              <Pressable
+                key={tab.name}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: focused }}
+                accessibilityLabel={tab.label}
+                onPress={() => navigation.navigate(tab.name)}
+                style={styles.tab}
+                hitSlop={space.sm}
+              >
+                <Icon name={tab.icon} size={22} color={focused ? theme.text : theme.textFaint} />
+                <Text style={[type.micro, { color: focused ? theme.text : theme.textFaint, marginTop: 3 }]}>
+                  {tab.label}
+                </Text>
+              </Pressable>
+            )
+          }
+          return (
+            <View
+              style={[
+                styles.bar,
+                { backgroundColor: theme.bgElevated, paddingBottom: Math.max(insets.bottom, space.md) },
+              ]}
             >
-              <Icon name="plus" size={26} color={theme.bg} weight={2.2} />
-            </Pressable>
-          </View>
-        )}
+              {item(0)}
+              {item(1)}
+              <View style={styles.fabSlot}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Add"
+                  onPress={() => setSheetOpen(true)}
+                  style={[styles.fab, { backgroundColor: theme.accent }]}
+                >
+                  <Icon name="scan" size={26} color={theme.onAccent} weight={2.2} />
+                </Pressable>
+              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Foods"
+                onPress={() => router.push('/saved-foods' as never)}
+                style={styles.tab}
+                hitSlop={space.sm}
+              >
+                <Icon name="bookmark" size={22} color={theme.textFaint} />
+                <Text style={[type.micro, { color: theme.textFaint, marginTop: 3 }]}>Foods</Text>
+              </Pressable>
+              {item(2)}
+            </View>
+          )
+        }}
       >
         {TABS.map((t) => (
           <Tabs.Screen key={t.name} name={t.name} options={{ title: t.label }} />
@@ -90,7 +110,7 @@ export default function TabLayout() {
 
       <Modal visible={sheetOpen} transparent animationType="fade" onRequestClose={() => setSheetOpen(false)}>
         <Pressable style={styles.backdrop} onPress={() => setSheetOpen(false)}>
-          <View style={[styles.grid, { paddingBottom: Math.max(insets.bottom, space.md) + 90 }]}>
+          <View style={[styles.grid, { paddingBottom: Math.max(insets.bottom, space.md) + 100 }]}>
             {ACTIONS.map((a) => (
               <Pressable
                 key={a.label}
@@ -108,14 +128,13 @@ export default function TabLayout() {
           </View>
 
           <View style={[styles.closeWrap, { paddingBottom: Math.max(insets.bottom, space.md) }]}>
-            <View style={{ flex: 1 }} />
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Close"
               onPress={() => setSheetOpen(false)}
-              style={[styles.fab, { backgroundColor: theme.text }]}
+              style={[styles.fab, { backgroundColor: theme.accent }]}
             >
-              <Icon name="close" size={22} color={theme.bg} weight={2.2} />
+              <Icon name="close" size={22} color={theme.onAccent} weight={2.2} />
             </Pressable>
           </View>
         </Pressable>
@@ -125,33 +144,28 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  wrap: {
+  bar: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: space.md,
-    paddingHorizontal: space.lg,
-  },
-  pill: {
-    flex: 1,
-    flexDirection: 'row',
-    borderRadius: radius.pill,
-    borderWidth: StyleSheet.hairlineWidth,
-    padding: space.xs,
+    paddingTop: space.md,
+    paddingHorizontal: space.md,
+    borderTopLeftRadius: radius.xl,
+    borderTopRightRadius: radius.xl,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: MIN_TAP_TARGET,
-    borderRadius: radius.pill,
   },
+  fabSlot: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   fab: {
-    width: 58,
-    height: 58,
+    width: 60,
+    height: 60,
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
@@ -176,6 +190,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flexDirection: 'row',
-    paddingHorizontal: space.lg,
+    justifyContent: 'center',
   },
 })

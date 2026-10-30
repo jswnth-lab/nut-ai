@@ -49,6 +49,14 @@ export const palette = {
   // Success is quiet on purpose. Logging a meal is not an achievement to
   // celebrate; it is a thing you did.
   affirm: '#2E9E6B',
+
+  // Brand accent: fresh lime, from the design reference.
+  lime50: '#F1F9DF',
+  lime100: '#E2F4B8',
+  lime200: '#CDEB8B',
+  lime500: '#8CD03B',
+  lime600: '#6DB320',
+  pageGray: '#F3F4F0',
 } as const
 
 export interface Theme {
@@ -69,19 +77,23 @@ export interface Theme {
   safety: string
   safetyBg: string
   affirm: string
+  accent: string
+  accentSoft: string
+  accentStrong: string
+  onAccent: string
   isDark: boolean
 }
 
 export const lightTheme: Theme = {
-  bg: palette.white,
+  bg: palette.pageGray,
   bgElevated: palette.white,
-  bgSunken: palette.ink50,
-  border: palette.ink200,
+  bgSunken: palette.white,
+  border: palette.ink100,
   text: palette.ink900,
   textMuted: palette.ink500,
   textFaint: palette.ink400,
-  ring: palette.ink900,
-  ringTrack: palette.ink100,
+  ring: palette.lime500,
+  ringTrack: palette.lime100,
   protein: palette.protein,
   carbs: palette.carbs,
   fat: palette.fat,
@@ -90,6 +102,10 @@ export const lightTheme: Theme = {
   safety: palette.safety,
   safetyBg: palette.safetyBg,
   affirm: palette.affirm,
+  accent: palette.lime500,
+  accentSoft: palette.lime100,
+  accentStrong: palette.lime600,
+  onAccent: palette.ink900,
   isDark: false,
 }
 
@@ -103,12 +119,12 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   bg: palette.ink900,
   bgElevated: palette.ink800,
-  bgSunken: palette.ink900,
+  bgSunken: palette.ink700,
   border: palette.ink700,
   text: palette.ink50,
   textMuted: palette.ink300,
   textFaint: palette.ink400,
-  ring: palette.ink50,
+  ring: palette.lime500,
   ringTrack: palette.ink700,
   protein: '#6E9BFF',
   carbs: '#F5BC63',
@@ -118,6 +134,10 @@ export const darkTheme: Theme = {
   safety: '#F0655B',
   safetyBg: '#3A1E1C',
   affirm: '#4FBE8C',
+  accent: '#9BDC4C',
+  accentSoft: '#2A3A14',
+  accentStrong: '#B4EC6E',
+  onAccent: palette.ink900,
   isDark: true,
 }
 
@@ -133,10 +153,10 @@ export const space = {
 } as const
 
 export const radius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
+  sm: 10,
+  md: 16,
+  lg: 20,
+  xl: 28,
   pill: 999,
 } as const
 
